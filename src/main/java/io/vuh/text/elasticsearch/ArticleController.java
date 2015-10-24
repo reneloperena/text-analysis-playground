@@ -2,12 +2,10 @@ package io.vuh.text.elasticsearch;
 
 import java.util.List;
 
-import io.vuh.text.model.Article;
-
 public interface ArticleController {
 	
-	void retreiveAllArticles();
+	void pushAllArticles();
 	
-	void retreiveArticlesByIDs(List<String> ids);
+	void pushArticlesByIDs(List<String> ids);
 	
 }

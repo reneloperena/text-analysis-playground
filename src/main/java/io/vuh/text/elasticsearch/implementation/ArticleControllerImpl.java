@@ -25,13 +25,13 @@ public class ArticleControllerImpl implements ArticleController{
 	@Inject ElasticSearchLoaderImpl loader;
 	
 	@Override
-	public void retreiveAllArticles(){		
+	public void pushAllArticles(){		
 		loader.loadArticles(articleManager.getAllArticles());
 		
 	}
 
 	@Override
-	public void retreiveArticlesByIDs(List<String> ids) {
+	public void pushArticlesByIDs(List<String> ids) {
 		List<Article> articles = new ArrayList<>();
 		Observable.from(ids).map((id)-> {return articleManager.getArticleById(id);})
 		.subscribe((article)->{articles.add(article);},(err)->{logger.error(err);},()->{loader.loadArticles(articles);});

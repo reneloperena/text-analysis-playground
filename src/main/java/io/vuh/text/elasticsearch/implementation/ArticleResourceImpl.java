@@ -14,9 +14,6 @@ public class ArticleResourceImpl implements ArticleResource{
 	
 	@Override
 	public void loadArticlesById(List<String> ids) {
-		articleController.retreiveArticlesByIDs(ids);
+		articleController.pushArticlesByIDs(ids);
 	}
-	
-	
-
 }
