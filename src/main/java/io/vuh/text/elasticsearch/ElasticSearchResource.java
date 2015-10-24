@@ -10,9 +10,9 @@ import javax.ws.rs.Produces;
 @Path("/v1/")
 @Consumes({ "application/xml", "application/json" })
 @Produces({ "application/xml", "application/json" })
-public interface ArticleResource {
+public interface ElasticSearchResource {
 
 	@POST
-    @Path("articles")
-	public void loadArticlesById(List<String> ids);
+	@Path("articles")
+	public void pushArticlesById(List<String> ids);
 }
