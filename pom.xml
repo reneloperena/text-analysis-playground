@@ -24,20 +24,17 @@
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
+            <plugin>
+	           <groupId>org.apache.maven.plugins</groupId>
+	           <artifactId>maven-war-plugin</artifactId>
+	           <configuration>
+	              <failOnMissingWebXml>false</failOnMissingWebXml>
+	           </configuration>
+	        </plugin>
         </plugins>
     </build>
     <dependencies>
-        <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>eclipselink</artifactId>
-            <version>2.5.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
-            <version>2.5.2</version>
-            <scope>provided</scope>
-        </dependency>
+
         <dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
@@ -86,6 +83,14 @@
             <version>1.2.17</version>
             <scope>provided</scope>
         </dependency>
+        
+        <dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-clients</artifactId>
+			<version>0.8.2.2</version>
+		</dependency>
+        
+        
 
     </dependencies>
     
