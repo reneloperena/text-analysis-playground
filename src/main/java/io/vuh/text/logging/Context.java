@@ -11,40 +11,39 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import rx.Observable;
-
 /**
  * @author Rene Loperena <rene@vuh.io>
  *
  */
-public class Context { 
-	Client client = new TransportClient().addTransportAddress(new InetSocketTransportAddress(System.getProperty("ELASTICSEARCH_IP"), 9300));
-	
-	/**
-	 * @param injectionPoint
-	 * @return
-	 */
-	@Produces
-    public Logger createLogger (final InjectionPoint injectionPoint){
-        return Logger.getLogger (injectionPoint.getMember ().getDeclaringClass ().getName ());
-    }
-    
+public class Context {
+    Client client = new TransportClient()
+	    .addTransportAddress(new InetSocketTransportAddress(System.getProperty("ELASTICSEARCH_IP"), 9300));
+
     /**
      * @param injectionPoint
      * @return
      */
     @Produces
-    public ObjectMapper createObjectMapper (final InjectionPoint injectionPoint){
-        return new ObjectMapper();
+    public Client createClient(final InjectionPoint injectionPoint) {
+	return client;
     }
-    
+
     /**
      * @param injectionPoint
      * @return
      */
     @Produces
-    public Client createClient(final InjectionPoint injectionPoint){
-    	return client;
+    public Logger createLogger(final InjectionPoint injectionPoint) {
+	return Logger.getLogger(injectionPoint.getMember().getDeclaringClass().getName());
     }
-          
+
+    /**
+     * @param injectionPoint
+     * @return
+     */
+    @Produces
+    public ObjectMapper createObjectMapper(final InjectionPoint injectionPoint) {
+	return new ObjectMapper();
+    }
+
 }
