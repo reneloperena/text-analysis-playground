@@ -1,7 +1,6 @@
 package io.vuh.text.rss.manager;
 
 import java.net.MalformedURLException;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -10,14 +9,19 @@ import org.apache.log4j.Logger;
 import io.vuh.text.model.Article;
 import io.vuh.text.model.ArticleManager;
 import io.vuh.text.rss.RSSArticleReader;
+import io.vuh.text.rss.RSSArticleReaderImpl;
 import io.vuh.text.rss.resource.transport.LoadRSSResponse;
 import rx.Observable;
-import rx.schedulers.Schedulers;
 
 public class RSSArticleManagerImpl implements RSSArticleManager {
 
-    @Inject
-    private RSSArticleReader rssArticleReader;
+    public static void main(final String args[]) {
+	final RSSArticleManager manager = new RSSArticleManagerImpl();
+	manager.loadRSSFeed("http://www.chicagotribune.com/bluesky/rss2.0.xml");
+    }
+
+    // @Inject
+    private final RSSArticleReader rssArticleReader = new RSSArticleReaderImpl();
 
     @Inject
     private ArticleManager articleManager;
@@ -37,16 +41,18 @@ public class RSSArticleManagerImpl implements RSSArticleManager {
 
 	try {
 	    final long startTime = System.nanoTime();
-	    final List<Article> results = rssArticleReader.loadArticles(url);
-	    response.setLoadedArticles(results.size());
+	    final Observable<Article> results = rssArticleReader.loadArticles(url);
 
-	    Observable.from(results).flatMap(entry -> {
-		return Observable.defer(() -> Observable.just(entry)).subscribeOn(Schedulers.newThread());
-	    }).toBlocking().forEach(article -> articleManager.createArticle(article));
+	    results.toBlocking().forEach(article -> {
+		// articleManager.createArticle(article);
+		System.out.println(article.getTitle());
+		response.setLoadedArticles(response.getLoadedArticles() + 1);
+	    });
 
 	    final long endTime = System.nanoTime() - startTime;
 	    final double timeElapsed = (double) endTime / 1000000000;
-	    logger.info("Load finished in " + timeElapsed + " seconds");
+	    // logger.info("Load finished in " + timeElapsed + " seconds");
+	    System.out.println("Load finished in " + timeElapsed + " seconds");
 	    response.setTimeElapsed(timeElapsed);
 	} catch (final MalformedURLException e) {
 	    e.printStackTrace();

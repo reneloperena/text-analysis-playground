@@ -3,8 +3,6 @@ package io.vuh.text.rss;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -12,7 +10,6 @@ import org.apache.log4j.Logger;
 
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
-import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 
@@ -26,25 +23,26 @@ import rx.schedulers.Schedulers;
  */
 public class RSSArticleReaderImpl implements RSSArticleReader {
 
-    @Inject
-    private NewsContentScrapper newsContentScrapper;
+    // @Inject
+    private final NewsContentScrapper newsContentScrapper = new NewsContentScrapperDefaultImpl();
 
     @Inject
     private Logger logger;
 
-    private Article createArticle(final SyndEntry s, final String source) {
+    private Observable<Article> createArticle(final SyndEntry s, final String source) {
 	final Article result = new Article();
 	result.setDate(s.getPublishedDate());
 	result.setId(Integer.toString(s.getUri().hashCode()));
 	result.setSource(source);
 	try {
-	    result.setText(newsContentScrapper.getNewsContent(s.getLink()));
-	} catch (final IOException e) {
-	    result.setText("Unable to scrape News Content");
+	    newsContentScrapper.getNewsContent(s.getLink()).subscribe(text -> result.setText(text));
+	} catch (final IOException ioe) {
+	    ioe.printStackTrace();
+	    throw new RuntimeException();
 	}
 	result.setTitle(s.getTitle());
 	result.setUrl(s.getLink());
-	return result;
+	return Observable.just(result);
     }
 
     /*
@@ -53,26 +51,24 @@ public class RSSArticleReaderImpl implements RSSArticleReader {
      * @see io.vuh.text.rss.RSSArticleReader#loadArticles()
      */
     @Override
-    public List<Article> loadArticles(final String rssFeedUrl) throws MalformedURLException {
-	logger.debug("Called loadArticles with " + rssFeedUrl);
-
-	final List<Article> results = new ArrayList<>();
+    public Observable<Article> loadArticles(final String rssFeedUrl) throws MalformedURLException {
+	// logger.debug("Called loadArticles with " + rssFeedUrl);
 
 	final URL url = new URL(rssFeedUrl);
 
 	final SyndFeedInput input = new SyndFeedInput();
-	try {
-	    final SyndFeed feed = input.build(new XmlReader(url));
+	final SyndFeed feed = input.build(new XmlReader(url));
+	return Observable.from(feed.getEntries()).flatMap(entry -> {
+	    return Observable.defer(() -> {
+		try {
+		    return createArticle(entry, feed.getDescription());
+		} catch (final Exception e) {
+		    e.printStackTrace();
+		    return null;
+		}
+	    }).subscribeOn(Schedulers.newThread());
+	});
 
-	    Observable.from(feed.getEntries()).flatMap(entry -> {
-		return Observable.defer(() -> Observable.just(createArticle(entry, feed.getDescription())))
-			.subscribeOn(Schedulers.newThread());
-	    }).toBlocking().forEach(article -> results.add(article));
-
-	} catch (IllegalArgumentException | FeedException | IOException e) {
-	    e.printStackTrace();
-	}
-	return results;
     }
 
 }

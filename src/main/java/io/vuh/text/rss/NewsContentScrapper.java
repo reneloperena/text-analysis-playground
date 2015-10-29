@@ -3,6 +3,8 @@ package io.vuh.text.rss;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import rx.Observable;
+
 /**
  * @author nobuji.saito
  *
@@ -15,6 +17,6 @@ public interface NewsContentScrapper {
      * @throws MalformedURLException
      * @throws IOException
      */
-    String getNewsContent(String url) throws MalformedURLException, IOException;
+    Observable<String> getNewsContent(String url) throws MalformedURLException, IOException;
 
 }
