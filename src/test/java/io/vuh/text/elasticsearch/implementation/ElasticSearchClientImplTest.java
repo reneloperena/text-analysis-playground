@@ -2,6 +2,7 @@ package io.vuh.text.elasticsearch.implementation;
 
 import java.lang.reflect.Field;
 
+import org.easymock.EasyMock;
 import org.easymock.EasyMockRunner;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
@@ -19,16 +20,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @RunWith(EasyMockRunner.class)
 public class ElasticSearchClientImplTest {
-	
+
 	@TestSubject
 	private ElasticSearchClientImpl esClient = new ElasticSearchClientImpl();
-	
+
 	@Mock
 	private ObjectMapper objectMapper;
-	
+
 	@Mock
 	private Client client;
-	
+
 	/**
 	 * Injects Mocks using Reflection
 	 */
@@ -48,5 +49,21 @@ public class ElasticSearchClientImplTest {
 			// This should not fail unless the declared field name is changed.
 		}
 	}
-	
+
+	/**
+	 * Sets the mocks on Replay mode
+	 */
+	private void replayMocks() {
+		EasyMock.replay(objectMapper);
+		EasyMock.replay(client);
+	}
+
+	/**
+	 * Verifies calls on the mocks
+	 */
+	private void verifyMocks() {
+		EasyMock.verify(objectMapper);
+		EasyMock.verify(client);
+	}
+
 }

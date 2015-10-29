@@ -88,7 +88,6 @@ public class ArticleManagerImplTest {
 
 		replayMocks();
 		articleManagerImpl.createArticle(null);
-		verifyMocks();
 	}
 
 	/**
