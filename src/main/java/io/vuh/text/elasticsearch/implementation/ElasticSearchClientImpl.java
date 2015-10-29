@@ -31,6 +31,7 @@ public class ElasticSearchClientImpl implements ElasticSearchClient {
 	/* (non-Javadoc)
 	 * @see io.vuh.text.elasticsearch.ElasticSearchClient#postArticle(io.vuh.text.model.Article)
 	 */
+
 	@Override
 	public void postArticle(Article article) {
 		try {
