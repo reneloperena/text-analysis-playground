@@ -43,6 +43,9 @@ public class ArticleManagerImplTest {
 	@Mock
 	private EntityManager entityManager;
 
+	/**
+	 * Injects Mocks using Reflection
+	 */
 	@Before
 	public void setUp() {
 		Field field;
