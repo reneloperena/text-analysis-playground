@@ -6,6 +6,7 @@ import io.vuh.text.elasticsearch.ElasticSearchManager;
 import io.vuh.text.elasticsearch.ElasticSearchResource;
 
 /**
+ * Implements {@link ElasticSearchResource}
  * 
  * @author Rene Loperena <rene@vuh.io>
  *
@@ -13,13 +14,17 @@ import io.vuh.text.elasticsearch.ElasticSearchResource;
 public class ElasticSearchResourceImpl implements ElasticSearchResource {
 
 	@Inject
-	private ElasticSearchManager elasticSearchController;
+	private ElasticSearchManager elasticSearchManager;
 
-	/* (non-Javadoc)
-	 * @see io.vuh.text.elasticsearch.ElasticSearchResource#pushArticleById(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * io.vuh.text.elasticsearch.ElasticSearchResource#pushArticleById(java.lang
+	 * .String)
 	 */
 	@Override
 	public void pushArticleById(String id) {
-		elasticSearchController.pushArticleById(id);
+		elasticSearchManager.pushArticleById(id);
 	}
 }

@@ -12,7 +12,10 @@ import io.vuh.text.elasticsearch.ElasticSearchClient;
 import io.vuh.text.persistence.model.Article;
 
 /**
+ * Implements {@link ElasticSearchClient}
  * 
+ * Uses {@link ObjectMapper} to map the {@link Article} to a JSON object and
+ * {@link Client} to communicate with the ElasticSearch instance.
  * 
  * @author Rene Loperena <rene@vuh.io>
  *
@@ -28,8 +31,12 @@ public class ElasticSearchClientImpl implements ElasticSearchClient {
 	@Inject
 	private Client client;
 
-	/* (non-Javadoc)
-	 * @see io.vuh.text.elasticsearch.ElasticSearchClient#postArticle(io.vuh.text.model.Article)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * io.vuh.text.elasticsearch.ElasticSearchClient#postArticle(io.vuh.text.
+	 * model.Article)
 	 */
 
 	@Override

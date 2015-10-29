@@ -1,7 +1,7 @@
 package io.vuh.text.elasticsearch;
 
 /**
- * 
+ * Manages all the Article-ElasticSearch operations.
  * 
  * @author Rene Loperena <rene@vuh.io>
  *
