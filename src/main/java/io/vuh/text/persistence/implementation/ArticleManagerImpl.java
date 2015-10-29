@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.vuh.text.persistence;
+package io.vuh.text.persistence.implementation;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import io.vuh.text.persistence.ArticleManager;
 import io.vuh.text.persistence.model.Article;
 import rx.Observable;
 
@@ -35,7 +36,6 @@ public class ArticleManagerImpl implements ArticleManager {
 	@Override
 	public void createArticle(Article article) {
 		entityManager.persist(article);
-
 	}
 
 	/*
@@ -45,7 +45,9 @@ public class ArticleManagerImpl implements ArticleManager {
 	 */
 	@Override
 	public Observable<Article> getArticleById(String id) {
-		return Observable.just(entityManager.find(Article.class, id));
+		// It will return a RxJava Observable, if the entityManager returns
+		// null, it will be filtered by the filter predicate
+		return Observable.just(entityManager.find(Article.class, id)).filter(article -> article != null);
 	}
 
 	/*
