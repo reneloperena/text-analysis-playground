@@ -1,11 +1,19 @@
 package io.vuh.text.elasticsearch;
 
-import java.util.List;
-
-public interface ElasticSearchController {
-
+/**
+ * 
+ * 
+ * @author Rene Loperena <rene@vuh.io>
+ *
+ */
+public interface ElasticSearchManager {
+	/**
+	 * Will push all the available articles in the the persistence layer to the ElasticSearch server.
+	 */
 	void pushAllArticles();
-
-	void pushArticlesByIDs(List<String> ids);
-
+	/**
+	 * Will push a specific article in the persistence layer to the ElasticSearch server.
+	 * @param id of the article
+	 */
+	void pushArticleById(String id);
 }

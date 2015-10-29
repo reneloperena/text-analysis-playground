@@ -1,19 +1,25 @@
 package io.vuh.text.elasticsearch.implementation;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
-import io.vuh.text.elasticsearch.ElasticSearchController;
+import io.vuh.text.elasticsearch.ElasticSearchManager;
 import io.vuh.text.elasticsearch.ElasticSearchResource;
 
+/**
+ * 
+ * @author Rene Loperena <rene@vuh.io>
+ *
+ */
 public class ElasticSearchResourceImpl implements ElasticSearchResource {
 
 	@Inject
-	private ElasticSearchController elasticSearchController;
+	private ElasticSearchManager elasticSearchController;
 
+	/* (non-Javadoc)
+	 * @see io.vuh.text.elasticsearch.ElasticSearchResource#pushArticleById(java.lang.String)
+	 */
 	@Override
-	public void pushArticlesById(List<String> ids) {
-		elasticSearchController.pushArticlesByIDs(ids);
+	public void pushArticleById(String id) {
+		elasticSearchController.pushArticleById(id);
 	}
 }

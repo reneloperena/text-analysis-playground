@@ -1,20 +1,30 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package io.vuh.text.model;
 
 import java.util.List;
 
+import rx.Observable;
+
 /**
- *
- * @author Rene
+ * Interface to interact with {@link Article} persistence.
+ * @author Rene Loperena <rene@vuh.io>
  */
 public interface ArticleManager {
-   void createArticle(Article article);
-   
-   Article getArticleById(String id);
-   
-   List<Article> getAllArticles();
+	 /**
+	 * Creates a new {@link Article} on the persistence layer.
+	 * @param article to store in the persistence layer.
+	 */
+	void createArticle(Article article);
+	   
+	 /**
+	 * Gets an specific {@link Article} based on its id from the persistence layer.
+	 * @param id of the article we want to retrieve
+	 * @return RxJava's {@link Article} Observable
+	 */
+	Observable<Article> getArticleById(String id);
+	   
+ 	/**
+	* Gets all {@link Article}s stored in the persistence layer.
+	* @return RxJava's {@link Article} Observable
+	*/
+	Observable<Article> getAllArticles();
 }

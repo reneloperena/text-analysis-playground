@@ -11,10 +11,16 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import rx.Observable;
+
 
 /**
+ * Implementation of {@link ArticleManager}
+ * 
+ * Uses JPA {@link EntityManager} for container-based RDBMS persistence.
+ * 
+ * @author Rene Loperena <rene@vuh.io>
  *
- * @author Rene
  */
 @Stateless
 public class ArticleManagerImpl implements ArticleManager {
@@ -22,20 +28,29 @@ public class ArticleManagerImpl implements ArticleManager {
 	@PersistenceContext
     private EntityManager entityManager;
 
+	/* (non-Javadoc)
+	 * @see io.vuh.text.model.ArticleManager#createArticle(io.vuh.text.model.Article)
+	 */
 	@Override
 	public void createArticle(Article article) {
 		entityManager.persist(article);
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see io.vuh.text.model.ArticleManager#getArticleById(java.lang.String)
+	 */
 	@Override
-	public Article getArticleById(String id) {
-		return entityManager.find(Article.class, id);
+	public Observable<Article> getArticleById(String id) {
+		return Observable.just(entityManager.find(Article.class, id));
 	}
 
+	/* (non-Javadoc)
+	 * @see io.vuh.text.model.ArticleManager#getAllArticles()
+	 */
 	@Override
-	public List<Article> getAllArticles() {
-		return entityManager.createNamedQuery("Article.getAllArticles",Article.class).getResultList();
+	public Observable<Article> getAllArticles() {
+		return Observable.from(entityManager.createNamedQuery("Article.getAllArticles",Article.class).getResultList());
 	}	
 	
 }

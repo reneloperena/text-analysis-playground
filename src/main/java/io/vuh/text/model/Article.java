@@ -13,7 +13,9 @@ import javax.persistence.TemporalType;
 
 /**
  * 
- * @author Rene
+ * 
+ * @author Rene Loperena <rene@vuh.io>
+ *
  */
 @Entity
 @Table(name="Article")
