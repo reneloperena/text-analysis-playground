@@ -3,9 +3,12 @@
  */
 package io.vuh.text.persistence.implementation;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.junit.Assert.assertEquals;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -13,32 +16,25 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import org.easymock.EasyMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
 import org.easymock.EasyMockRunner;
-import org.easymock.IAnswer;
 import org.easymock.Mock;
-import org.easymock.MockType;
 import org.easymock.TestSubject;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import io.vuh.text.persistence.ArticleManager;
 import io.vuh.text.persistence.model.Article;
-import rx.Observable;
 
 /**
- * Tests functionality for {@link ArticleManager}
+ * Tests functionality for {@link ArticleManagerImpl}
  * 
  * @author Rene Loperena <rene@vuh.io>
  *
  */
 @RunWith(EasyMockRunner.class)
 public class ArticleManagerImplTest {
-	
+
 	private static final String TEST_ID = "123";
 
 	@TestSubject
@@ -94,18 +90,19 @@ public class ArticleManagerImplTest {
 
 	/**
 	 * Given that the given an id that exists in the db, When I call
-	 * {@link ArticleManager#getArticleById(String)}, Then it will return
-	 * an observable with the article.
+	 * {@link ArticleManager#getArticleById(String)}, Then it will return an
+	 * observable with the article.
 	 * 
 	 */
 	@Test
-	public void testGetAnArticleUsingAValidId() {;
+	public void testGetAnArticleUsingAValidId() {
+		;
 		Article article = new Article();
 		expect(entityManager.find(Article.class, TEST_ID)).andReturn(article);
 		replayMocks();
 		Article response = articleManagerImpl.getArticleById(TEST_ID).toBlocking().first();
-		
-		assertEquals("Must return same article as the DB",article,response);
+
+		assertEquals("Must return same article as the DB", article, response);
 
 	}
 
@@ -115,11 +112,11 @@ public class ArticleManagerImplTest {
 	 * empty observable.
 	 * 
 	 */
-	@Test(expected=NoSuchElementException.class)
+	@Test(expected = NoSuchElementException.class)
 	public void testReturnEmptyObservableWhenArticleDoesntExistInDB() {
 		expect(entityManager.find(Article.class, TEST_ID)).andReturn(null);
 		replayMocks();
-		//If the observable is empty, first() will throw NoSuchElementException
+		// If the observable is empty, first() will throw NoSuchElementException
 		articleManagerImpl.getArticleById(TEST_ID).toBlocking().first();
 	}
 
@@ -131,15 +128,16 @@ public class ArticleManagerImplTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testExceptWhenAnInvalidIdIsPassedWhileGettingArticle() {
-		expect(entityManager.find(Article.class,null)).andThrow(new IllegalArgumentException(""));
+		expect(entityManager.find(Article.class, null)).andThrow(new IllegalArgumentException(""));
 		replayMocks();
 		articleManagerImpl.getArticleById(null);
 
 	}
+
 	/**
-	 * Given that I have Articles in my DB,
-	 * When I call {@link ArticleManager#getAllArticles()},
-	 * Then it will return an observable with all the articles in the db.
+	 * Given that I have Articles in my DB, When I call
+	 * {@link ArticleManager#getAllArticles()}, Then it will return an
+	 * observable with all the articles in the db.
 	 */
 	@SuppressWarnings("unchecked")
 	@Test
@@ -150,13 +148,14 @@ public class ArticleManagerImplTest {
 		TypedQuery<Article> typedQuery = EasyMock.mock(TypedQuery.class);
 		expect(typedQuery.getResultList()).andReturn(list);
 		expect(entityManager.createNamedQuery("Article.getAllArticles", Article.class)).andReturn(typedQuery);
-		
+
 		replayMocks();
 		EasyMock.replay(typedQuery);
 		Article result = articleManagerImpl.getAllArticles().toBlocking().last();
 		verifyMocks();
-		
-		assertEquals("The item returned on the obserbable must be the same as the returned inside the list", result,article);
+
+		assertEquals("The item returned on the obserbable must be the same as the returned inside the list", result,
+				article);
 	}
 
 	/**
