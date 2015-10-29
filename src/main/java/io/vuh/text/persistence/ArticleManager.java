@@ -1,7 +1,8 @@
-package io.vuh.text.model;
+package io.vuh.text.persistence;
 
 import java.util.List;
 
+import io.vuh.text.persistence.model.Article;
 import rx.Observable;
 
 /**

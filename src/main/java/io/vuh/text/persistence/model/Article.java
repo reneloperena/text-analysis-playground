@@ -1,4 +1,4 @@
-package io.vuh.text.model;
+package io.vuh.text.persistence.model;
 
 import java.io.Serializable;
 import java.util.Date;

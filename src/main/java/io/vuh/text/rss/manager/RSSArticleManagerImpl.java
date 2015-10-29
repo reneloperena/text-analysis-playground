@@ -6,8 +6,8 @@ import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
 
-import io.vuh.text.model.Article;
-import io.vuh.text.model.ArticleManager;
+import io.vuh.text.persistence.ArticleManager;
+import io.vuh.text.persistence.model.Article;
 import io.vuh.text.rss.RSSArticleReader;
 import io.vuh.text.rss.RSSArticleReaderImpl;
 import io.vuh.text.rss.resource.transport.LoadRSSResponse;

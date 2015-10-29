@@ -9,7 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.vuh.text.elasticsearch.ElasticSearchClient;
-import io.vuh.text.model.Article;
+import io.vuh.text.persistence.model.Article;
 
 /**
  * 

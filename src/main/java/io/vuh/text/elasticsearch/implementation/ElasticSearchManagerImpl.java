@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 
 import io.vuh.text.elasticsearch.ElasticSearchClient;
 import io.vuh.text.elasticsearch.ElasticSearchManager;
-import io.vuh.text.model.ArticleManager;
+import io.vuh.text.persistence.ArticleManager;
 
 /**
  * 

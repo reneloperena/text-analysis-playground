@@ -1,6 +1,6 @@
 package io.vuh.text.elasticsearch;
 
-import io.vuh.text.model.Article;
+import io.vuh.text.persistence.model.Article;
 
 /**
  * 

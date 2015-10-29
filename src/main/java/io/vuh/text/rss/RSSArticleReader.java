@@ -2,7 +2,7 @@ package io.vuh.text.rss;
 
 import java.net.MalformedURLException;
 
-import io.vuh.text.model.Article;
+import io.vuh.text.persistence.model.Article;
 import rx.Observable;
 
 /**

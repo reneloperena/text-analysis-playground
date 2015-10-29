@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.vuh.text.model;
+package io.vuh.text.persistence;
 
 import java.util.List;
 
@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import io.vuh.text.persistence.model.Article;
 import rx.Observable;
 
 
