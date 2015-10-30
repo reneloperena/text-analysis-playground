@@ -8,8 +8,6 @@ import org.apache.log4j.Logger;
 import io.vuh.text.elasticsearch.ElasticSearchClient;
 import io.vuh.text.elasticsearch.ElasticSearchManager;
 import io.vuh.text.persistence.ArticleManager;
-import io.vuh.text.persistence.model.Article;
-import rx.Observable;
 
 /**
  * Implements {@link ElasticSearchManager}
@@ -58,7 +56,7 @@ public class ElasticSearchManagerImpl implements ElasticSearchManager {
 		try{
 			articleManager.getArticleById(id).subscribe(client::postArticle);
 		}catch(Exception e){
-			logger.error("Error on ArticleManager when loading "+id+" article.",e);
+			logger.error("Error on ArticleManager when loading " + id + " article.", e);
 		}
 	}
 

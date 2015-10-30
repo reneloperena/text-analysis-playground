@@ -6,8 +6,11 @@
 package io.vuh.text.persistence.implementation;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import org.apache.log4j.Logger;
 
 import io.vuh.text.persistence.ArticleManager;
 import io.vuh.text.persistence.model.Article;
@@ -23,6 +26,9 @@ import rx.Observable;
  */
 @Stateless
 public class ArticleManagerImpl implements ArticleManager {
+	
+	@Inject
+	Logger logger;
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -47,7 +53,11 @@ public class ArticleManagerImpl implements ArticleManager {
 	public Observable<Article> getArticleById(String id) {
 		// It will return a RxJava Observable, if the entityManager returns
 		// null, it will be filtered by the filter predicate
-		return Observable.just(entityManager.find(Article.class, id)).filter(article -> article != null);
+		return Observable.just(entityManager.find(Article.class, id)).filter(article -> {
+			boolean found = article != null;
+			if(!found) logger.info("Article "+id+" not found");
+			return found;
+			});
 	}
 
 	/*
